@@ -2,14 +2,14 @@ package utilities;
 
 import com.mongodb.*;
 import common.UnifiedQueryType;
-import services.StudentRepositoryService;
+import services.RepositoryServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class MongoStudentRepoUtility extends StudentRepositoryService {
+public class MongoStudentRepoUtility extends RepositoryServiceImpl {
 
     private MongoClient mongoClient;
     private DB currentDB;

@@ -24,7 +24,7 @@ public class UnifiedQueryType {
             params = new HashMap<String, Object>();
         }
 
-        public QueryBuilder setPair(String key, Object value) {
+        public QueryBuilder addQueryParamPair(String key, Object value) {
             this.params.put(key, value);
             return this;
         }
@@ -37,6 +37,10 @@ public class UnifiedQueryType {
 
     @Override
     public String toString() {
-        return super.toString();
+        StringBuilder queryString = new StringBuilder();
+        for(Map.Entry<String, Object> entry : this.params.entrySet()){
+            queryString.append(entry.getKey()).append(" : ").append(entry.getValue()).append("\n");
+        }
+        return queryString.toString();
     }
 }

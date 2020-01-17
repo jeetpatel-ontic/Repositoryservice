@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+
+    <contextName>Jeet Patel</contextName>
+
+    <appender name="ALL_LOGS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <file>/Users/jeetpatel/logs/${CONTAINER_LOG_PATH:-/}/all-logs.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/Users/jeetpatel/logs/${CONTAINER_LOG_PATH:-/}/archives/all-logs.%d{yyyy-MM-dd}.%i.log.zip
+            </fileNamePattern>
+            <maxHistory>15</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>20MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <encoder>
+            <charset>utf-8</charset>
+            <pattern>[%date{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] [%-5level] [%logger{35}] ctx_%X{oId}_%X{sId}_%X{uId}
+                [%msg] [%ex{full}]%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="AUTH_LOGS" class="ch.qos.logback.core.rolling.RollingFileAppender" additivity="false">
+        <append>true</append>
+        <file>/Users/jeetpatel/logs/${CONTAINER_LOG_PATH:-/}/auth-logs.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>
+                /Users/jeetpatel/logs/${CONTAINER_LOG_PATH:-/}/archives/auth-logs.%d{yyyy-MM-dd}.%i.log.zip
+            </fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <charset>utf-8</charset>
+            <pattern>[%date{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] [%-5level] [%msg] [%ex{full}]%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ARANGO_LOGS" class="ch.qos.logback.core.rolling.RollingFileAppender" additivity="false">
+        <append>true</append>
+        <file>/Users/jeetpatel/logs/${CONTAINER_LOG_PATH:-/}/arango-client-logs.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>
+                /Users/jeetpatel/logs/${CONTAINER_LOG_PATH:-/}/archives/arango-client-logs.%d{yyyy-MM-dd}.%i.log.zip
+            </fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <charset>utf-8</charset>
+            <pattern>[%date{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] [%-5level] [%msg] [%ex{full}]%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender" additivity="true">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>[%date{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] [%-5level] [%msg] [%ex{full}]%n</pattern>
+        </layout>
+    </appender>
+
+    <logger name="auth-logger" level="INFO" additivity="false">
+        <appender-ref ref="AUTH_LOGS"/>
+    </logger>
+
+
+    <logger name="com.arangodb" level="DEBUG" additivity="false">
+        <appender-ref ref="ARANGO_LOGS"/>
+    </logger>
+
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="ALL_LOGS"/>
+        <appender-ref ref="AUTH_LOGS"/>
+        <appender-ref ref="STDOUT"/>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="ALL_LOGS"/>
+        <appender-ref ref="AUTH_LOGS"/>
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+    <logger name="com.ontic.fwk.cache.CacheRefreshManager" level="INFO"/>
+    <logger name="com.ontic.app.OnticApp" level="INFO"/>
+
+</configuration>
